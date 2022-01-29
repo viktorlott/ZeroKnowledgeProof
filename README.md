@@ -3,6 +3,15 @@
 ## Lets user prove that they have a certain amount of crypto coins without revealing their wallet address
 
 
+<br/>
+
+This project is meant for learning purposes only. I though this was super cool, so i decided to try making it. 
+There is some stuff i still want to add, for example, a changes for the Prover to provide a secret that the verifier then 
+uses with their secret. This will help the Prover stay more annonymous because the Verifier can't pre-generate Proofs that they
+then can use to identify the Prover.
+<br/>
+If there is a weakness with my implementation, please make an issue.
+
 
 ```typescript
 // For this proof, both parties must have a record of all the wallets. 
