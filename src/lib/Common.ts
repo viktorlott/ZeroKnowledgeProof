@@ -12,7 +12,7 @@ const proofLog = (
   secret: string,
   length: number
 ) =>
-  console.log("Wallets with", amount, "coins - found", length, "\n");
+  console.log("[Wallets] with:", amount, "coins - found", length, "\n");
 
 class Common {
   wallets: Wallet[];
@@ -49,9 +49,10 @@ class Common {
     return matchingWallets.map((wallet, i) => {
       let s = secret
 
+      // We are manipulating the secret to prove that the Prover can detect the manipulation.
       if(fake && i === 5) {
-        s = this.generateSecret("123")
-        console.log(fake,"-",s)
+        s = this.generateSecret("123abd")
+        console.log(fake,"-",s, "\n")
       }
 
 

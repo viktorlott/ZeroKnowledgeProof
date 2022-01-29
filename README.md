@@ -1,11 +1,24 @@
-# Zero Knowledge Proof
+# Interactive Zero Knowledge Proof
 
-## Let user prove that they have a certain amount of crypto coins without revealing the wallet address
+## Lets user prove that they have a certain amount of crypto coins without revealing their wallet address
 
 
-#### Will add a indepth guide later.
 
 ```typescript
+// For this proof, both parties must have a record of all the wallets. 
+// Each wallet has a balance, a public key and an address.
+// Both parties can specify the amount range that is getting proven, as long as they are the same.
+// With this, both parties will use this infomation to gather all wallets matching the amount range specified.
+// Lets say that both of them gathered 10 wallets matching the specification, Verifier can then use each wallets public key
+// and encrypt a secret that only people with that amount in their wallets can decrypt. To make sure that the Verifier hasn't
+// manipulated any of the encrypted secrets, a hash signature is produced with the secret, public key and the encrypted secret 
+// so that the Prover can detect if any manipulation  has been performed to the data. 
+// After Prover has verified the validity of the data--they will send back the secret to the Verifier. 
+// If Verifiers initial secret matches Provers secret, 
+// the Verifier can trust that the Prover has the amount they are claiming to have.
+
+
+
 // Only the prover knowns their secret wallet.
 const proversSecretWallet = Wallets[3];
 

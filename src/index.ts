@@ -1,9 +1,14 @@
 import { Wallet, Common, Amount, Trust } from "lib";
 import wallets from "./wallets.json";
 import { isEqual } from 'lodash'
-import { pbkdf2Sync } from "crypto";
 
 const Wallets = wallets.map((wallet) => Wallet.serialize(wallet));
+
+type Sample = {
+  message: string;
+  signature: string;
+  key: string
+}
 
 class Prover extends Common {
   secretWallet: Wallet;
@@ -11,6 +16,8 @@ class Prover extends Common {
   constructor(secretWallet: Wallet, ledger: Wallet[]) {
     super(ledger);
     this.secretWallet = secretWallet;
+
+    console.log("[Prover] balance:", this.secretWallet.balance, "\n")
   }
 
   revealAmount(): Amount {
@@ -21,11 +28,7 @@ class Prover extends Common {
   }
   
   solvingProof(
-    samples: {
-      message: string;
-      signature: string;
-      key: string
-    }[]
+    samples: Sample[]
   ): string | undefined {
 
     const decryptedSamples = samples.map((block) => {
@@ -62,11 +65,23 @@ class Verifier extends Common {
   constructor(ledger: Wallet[]) {
     super(ledger);
   }
-
 }
+
+// For this proof, both parties must have a record of all the wallets. 
+// Each wallet has a balance, a public key and an address.
+// Both parties can specify the amount range that is getting proven, as long as they are the same.
+// With this, both parties will use this infomation to gather all wallets matching the amount range specified.
+// Lets say that both of them gathered 10 wallets matching the specification, Verifier can then use each wallets public key
+// and encrypt a secret that only people with that amount in their wallets can decrypt. To make sure that the Verifier hasn't
+// manipulated any of the encrypted secrets, a hash signature is produced with the secret, public key and the encrypted secret 
+// so that the Prover can detect if any manipulation  has been performed to the data. 
+// After Prover has verified the validity of the data--they will send back the secret to the Verifier. 
+// If Verifiers initial secret matches Provers secret, 
+// the Verifier can trust that the Prover has the amount they are claiming to have.
+
 function test(fail?: boolean) {
   // Only the prover knowns their secretWallet.
-  const proversSecretWallet = Wallets[3];
+  const proversSecretWallet = Wallets[Math.floor(Math.random() * Wallets.length)];
   
   // Prover will create a proof that the verifier can use to verify that the prover has a certain amount without revealing their wallet.
   const prover = new Prover(proversSecretWallet, Wallets);
@@ -79,7 +94,6 @@ function test(fail?: boolean) {
   const amountToProve = prover.revealAmount();
   
   // // Verifier will generate a secret value that only people with the same balance can decode.
-  // const secret = verifier.generateSecret();
   const secret = verifier.generateSecret("123abc")
   
   // Verifier builds a proof that will contain every wallet that has the same balance range
@@ -103,16 +117,19 @@ function test(fail?: boolean) {
   if(valid) {
     console.log("[Prover] has atleast", amountToProve.max, "coins in their wallet.")
   } else {
-    console.log("Proof failed")
+    console.log("[Proof]: failed")
   }
   console.log()
 }
 
-
+// We are proving that we can detect if verifier has manipulated our Proof
 console.log("------FAIL------\n")
 test(true)
 console.log("----------------\n")
+
 console.log()
+
+// Here we show that the Prover can actually prove that they have a cetain wallet balance without the Verifier identifying the wallet.
 console.log("-----SUCCEED----\n")
 test(false)
 console.log("----------------\n")
