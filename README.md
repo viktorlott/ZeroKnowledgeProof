@@ -4,7 +4,6 @@
 
 
 <br/>
-
 This project is meant for learning purposes only. I though this was super cool, so i decided to try making it. 
 There is some stuff i still want to add, for example, a changes for the Prover to provide a secret that the verifier then 
 uses with their secret. This will help the Prover stay more annonymous because the Verifier can't pre-generate Proofs that they
@@ -37,11 +36,11 @@ const prover = new Prover(proversSecretWallet, Wallets);
 // Verifier will ask prover if they have a certain amount without the prover revealing their wallet address.
 const verifier = new Verifier(Wallets);
 
-// Prover declares the balance range they are ready to reveal. 
+// Prover declares the balance range that they are ready to reveal. 
 // This could also be set by the verifier
 const amountToProve = prover.revealAmount();
 
-// // Verifier will generate a secret value that only people with the same balance can decode.
+// Verifier will generate a secret value that only people with the same balance can decode.
 const secret = verifier.generateSecret("123abc")
 
 // Verifier builds a proof that will contain every wallet that has the same balance range
