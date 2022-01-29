@@ -28,8 +28,8 @@ If there is a weakness with my implementation, please make an issue.
 
 
 
-// Only the prover knowns their secret wallet.
-const proversSecretWallet = Wallets[3];
+// Only the prover knowns their secretWallet.
+const proversSecretWallet = Wallets[Math.floor(Math.random() * Wallets.length)];
 
 // Prover will create a proof that the verifier can use to verify that the prover has a certain amount without revealing their wallet.
 const prover = new Prover(proversSecretWallet, Wallets);
@@ -42,7 +42,6 @@ const verifier = new Verifier(Wallets);
 const amountToProve = prover.revealAmount();
 
 // // Verifier will generate a secret value that only people with the same balance can decode.
-// const secret = verifier.generateSecret();
 const secret = verifier.generateSecret("123abc")
 
 // Verifier builds a proof that will contain every wallet that has the same balance range
