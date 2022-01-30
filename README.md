@@ -5,8 +5,8 @@
 
 <br/>
 This project is meant for learning purposes only. I though this was super cool, so i decided to try making it. 
-There is some stuff i still want to add, for example, a changes for the Prover to provide a secret that the verifier then 
-uses with their secret. This will help the Prover stay more annonymous because the Verifier can't pre-generate Proofs that they
+There is some stuff i still want to add, for example, a chance for the Prover to provide a secret of their own that the verifier then 
+concats with their secret. This will help the Prover stay more annonymous because the Verifier can't pre-generate Proofs that they
 then can use to identify the Prover.
 <br/>
 If there is a weakness with my implementation, please make an issue.
@@ -21,7 +21,7 @@ If there is a weakness with my implementation, please make an issue.
 // and encrypt a secret that only people with that amount in their wallets can decrypt. To make sure that the Verifier hasn't
 // manipulated any of the encrypted secrets, a hash signature is produced with the secret, public key and the encrypted secret 
 // so that the Prover can detect if any manipulation  has been performed to the data. 
-// After Prover has verified the validity of the data--they will send back the secret to the Verifier. 
+// After Prover has verified the validity of the data--they will send back the secret to the Verifier.
 // If Verifiers initial secret matches Provers secret, 
 // the Verifier can trust that the Prover has the amount they are claiming to have.
 
